@@ -36,4 +36,19 @@ public interface AppointmentRepo extends JpaRepository<Appointment, Long> {
 
     List<Appointment> findByDoctor_IdAndDate(Long doctorId, LocalDate date);
 
+    // Doctor's past appointments
+    Page<Appointment> findByDoctor_IdAndDateBeforeOrDoctor_IdAndDateEqualsAndTimeBefore(
+            Long doctorId1, LocalDate date1, Long doctorId2, LocalDate date2, LocalTime time, Pageable pageable);
+
+    // Doctor's upcoming appointments
+    Page<Appointment> findByDoctor_IdAndDateAfterOrDoctor_IdAndDateEqualsAndTimeAfter(
+            Long doctorId1, LocalDate date1, Long doctorId2, LocalDate date2, LocalTime time, Pageable pageable);
+
+    // Patient's past appointments
+    Page<Appointment> findByPatient_IdAndDateBeforeOrPatient_IdAndDateEqualsAndTimeBefore(
+            Long patientId1, LocalDate date1, Long patientId2, LocalDate date2, LocalTime time, Pageable pageable);
+
+    // Patient's upcoming appointments
+    Page<Appointment> findByPatient_IdAndDateAfterOrPatient_IdAndDateEqualsAndTimeAfter(
+            Long patientId1, LocalDate date1, Long patientId2, LocalDate date2, LocalTime time, Pageable pageable);
 }

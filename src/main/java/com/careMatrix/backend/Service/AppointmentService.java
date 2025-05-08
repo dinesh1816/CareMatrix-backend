@@ -175,4 +175,44 @@ public class AppointmentService {
         appointmentRepo.delete(appointment);
     }
 
+    public Page<Appointment> getPastAppointments(Pageable pageable) {
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        return appointmentRepo.findByDateBeforeOrDateEqualsAndTimeBefore(today, today, now, pageable);
+    }
+
+    public Page<Appointment> getUpcomingAppointments(Pageable pageable) {
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        return appointmentRepo.findByDateAfterOrDateEqualsAndTimeAfter(today, today, now, pageable);
+    }
+
+    public Page<Appointment> getDoctorPastAppointments(Long doctorId, Pageable pageable) {
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        return appointmentRepo.findByDoctor_IdAndDateBeforeOrDoctor_IdAndDateEqualsAndTimeBefore(
+            doctorId, today, doctorId, today, now, pageable);
+    }
+
+    public Page<Appointment> getDoctorUpcomingAppointments(Long doctorId, Pageable pageable) {
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        return appointmentRepo.findByDoctor_IdAndDateAfterOrDoctor_IdAndDateEqualsAndTimeAfter(
+            doctorId, today, doctorId, today, now, pageable);
+    }
+
+    public Page<Appointment> getPatientPastAppointments(Long patientId, Pageable pageable) {
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        return appointmentRepo.findByPatient_IdAndDateBeforeOrPatient_IdAndDateEqualsAndTimeBefore(
+            patientId, today, patientId, today, now, pageable);
+    }
+
+    public Page<Appointment> getPatientUpcomingAppointments(Long patientId, Pageable pageable) {
+        LocalDate today = LocalDate.now();
+        LocalTime now = LocalTime.now();
+        return appointmentRepo.findByPatient_IdAndDateAfterOrPatient_IdAndDateEqualsAndTimeAfter(
+            patientId, today, patientId, today, now, pageable);
+    }
+
 }

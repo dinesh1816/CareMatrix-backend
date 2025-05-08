@@ -23,17 +23,102 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
+    @GetMapping("/doctor/{doctorId}")
+    public Page<Appointment> getDoctorAppointments(
+            @PathVariable Long doctorId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String appointmentTimeType
+    ) {
+        Pageable pageable;
+        if ("past".equalsIgnoreCase(appointmentTimeType)) {
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").descending()
+                    .and(Sort.by("time").descending())
+                    .and(Sort.by("createdAt").descending())
+            );
+            return appointmentService.getDoctorPastAppointments(doctorId, pageable);
+        } else if ("upcoming".equalsIgnoreCase(appointmentTimeType)) {
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").ascending()
+                    .and(Sort.by("time").ascending())
+                    .and(Sort.by("createdAt").ascending())
+            );
+            return appointmentService.getDoctorUpcomingAppointments(doctorId, pageable);
+        } else {
+            // Default sorting for all appointments
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").ascending()
+                    .and(Sort.by("time").ascending())
+                    .and(Sort.by("createdAt").ascending())
+            );
+            return appointmentService.getAppointmentsByDoctorId(doctorId, pageable);
+        }
+    }
+
+    @GetMapping("/patient/{patientId}")
+    public Page<Appointment> getPatientAppointments(
+            @PathVariable Long patientId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String appointmentTimeType
+    ) {
+        Pageable pageable;
+        if ("past".equalsIgnoreCase(appointmentTimeType)) {
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").descending()
+                    .and(Sort.by("time").descending())
+                    .and(Sort.by("createdAt").descending())
+            );
+            return appointmentService.getPatientPastAppointments(patientId, pageable);
+        } else if ("upcoming".equalsIgnoreCase(appointmentTimeType)) {
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").ascending()
+                    .and(Sort.by("time").ascending())
+                    .and(Sort.by("createdAt").ascending())
+            );
+            return appointmentService.getPatientUpcomingAppointments(patientId, pageable);
+        } else {
+            // Default sorting for all appointments
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").ascending()
+                    .and(Sort.by("time").ascending())
+                    .and(Sort.by("createdAt").ascending())
+            );
+            return appointmentService.getAppointmentsByPatientId(patientId, pageable);
+        }
+    }
+
     @GetMapping
     public Page<Appointment> getAllAppointments(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String appointmentTimeType
     ) {
-        Pageable pageable = PageRequest.of(page, size, 
-            Sort.by("date").ascending()
-                .and(Sort.by("time").ascending())
-                .and(Sort.by("createdAt").ascending())
-        );
-        return appointmentService.getAllAppointments(pageable);
+        Pageable pageable;
+        if ("past".equalsIgnoreCase(appointmentTimeType)) {
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").descending()
+                    .and(Sort.by("time").descending())
+                    .and(Sort.by("createdAt").descending())
+            );
+            return appointmentService.getPastAppointments(pageable);
+        } else if ("upcoming".equalsIgnoreCase(appointmentTimeType)) {
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").ascending()
+                    .and(Sort.by("time").ascending())
+                    .and(Sort.by("createdAt").ascending())
+            );
+            return appointmentService.getUpcomingAppointments(pageable);
+        } else {
+            // Default sorting for all appointments
+            pageable = PageRequest.of(page, size, 
+                Sort.by("date").ascending()
+                    .and(Sort.by("time").ascending())
+                    .and(Sort.by("createdAt").ascending())
+            );
+            return appointmentService.getAllAppointments(pageable);
+        }
     }
 
     @GetMapping("/{appointmentId}")
