@@ -28,7 +28,11 @@ public class AppointmentController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Pageable pageable = PageRequest.of(page, size, 
+            Sort.by("date").ascending()
+                .and(Sort.by("time").ascending())
+                .and(Sort.by("createdAt").ascending())
+        );
         return appointmentService.getAllAppointments(pageable);
     }
 
@@ -83,9 +87,9 @@ public class AppointmentController {
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size, 
-            Sort.by("date").descending()
-                .and(Sort.by("time").descending())
-                .and(Sort.by("createdAt").descending())
+            Sort.by("date").ascending()
+                .and(Sort.by("time").ascending())
+                .and(Sort.by("createdAt").ascending())
         );
         return appointmentService.getAppointmentsByPatientId(patientId, pageable);
     }
@@ -97,9 +101,9 @@ public class AppointmentController {
             @RequestParam(defaultValue = "10") int size
     ) {
         Pageable pageable = PageRequest.of(page, size, 
-            Sort.by("date").descending()
-                .and(Sort.by("time").descending())
-                .and(Sort.by("createdAt").descending())
+            Sort.by("date").ascending()
+                .and(Sort.by("time").ascending())
+                .and(Sort.by("createdAt").ascending())
         );
         return appointmentService.getAppointmentsByDoctorId(doctorId, pageable);
     }
