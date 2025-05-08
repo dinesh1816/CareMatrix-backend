@@ -162,4 +162,17 @@ public class AppointmentService {
         return availableSlots;
     }
 
+    public void cancelAppointment(Long appointmentId, Long doctorId) {
+        // Get the appointment
+        Appointment appointment = getAppointmentById(appointmentId);
+        
+        // Verify that the doctor is authorized to cancel this appointment
+        if (!appointment.getDoctor().getId().equals(doctorId)) {
+            throw new RuntimeException("Unauthorized: Only the assigned doctor can cancel this appointment");
+        }
+        
+        // Delete the appointment
+        appointmentRepo.delete(appointment);
+    }
+
 }
