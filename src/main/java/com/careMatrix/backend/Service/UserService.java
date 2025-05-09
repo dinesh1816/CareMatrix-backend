@@ -59,6 +59,7 @@ public class UserService {
             patient.setCountry(request.getCountry());
             patient.setState(request.getState());
             patient.setZipcode(request.getZipcode());
+            patient.setDateOfBirth(request.getDateOfBirth());
             patient.setUser(savedUser);
             patientRepo.save(patient);
         } else if ("DOCTOR".equalsIgnoreCase(request.getRole())) {
@@ -74,6 +75,7 @@ public class UserService {
             doctor.setState(request.getState());
             doctor.setZipcode(request.getZipcode());
             doctor.setLicenseNumber(request.getLicenseNumber());
+            doctor.setDateOfBirth(request.getDateOfBirth());
             doctor.setUser(savedUser);
             doctorRepo.save(doctor);
         }

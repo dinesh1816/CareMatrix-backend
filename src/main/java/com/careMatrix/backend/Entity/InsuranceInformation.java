@@ -13,7 +13,7 @@ public class InsuranceInformation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String policyNumber;
+   private String policyNumber;
 
     private LocalDate expiryDate;
     private String coverage;
