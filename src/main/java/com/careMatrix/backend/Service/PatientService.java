@@ -77,6 +77,13 @@ public class PatientService {
         existingPatient.setGender(updatedPatient.getGender());
         existingPatient.setBloodGroup(updatedPatient.getBloodGroup());
         existingPatient.setDateOfBirth(updatedPatient.getDateOfBirth());
+        existingPatient.setEmailAddress(updatedPatient.getEmailAddress());
+        existingPatient.setMobileNumber(updatedPatient.getMobileNumber());
+        existingPatient.setStreet(updatedPatient.getStreet());
+        existingPatient.setCity(updatedPatient.getCity());
+        existingPatient.setState(updatedPatient.getState());
+        existingPatient.setCountry(updatedPatient.getCountry());
+        existingPatient.setZipcode(updatedPatient.getZipcode());
         // Add any additional fields here
         return patientRepository.save(existingPatient);
     }

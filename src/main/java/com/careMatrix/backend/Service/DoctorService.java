@@ -34,6 +34,7 @@ public class DoctorService {
         existing.setDateOfBirth(updatedDoctor.getDateOfBirth());
         existing.setGender(updatedDoctor.getGender());
         existing.setPhone(updatedDoctor.getPhone());
+        existing.setState(updatedDoctor.getState());
 
         return doctorRepo.save(existing);
     }
