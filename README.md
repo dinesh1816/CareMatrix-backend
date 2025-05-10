@@ -4,6 +4,13 @@ This is the backend for the CareMatrix Electronic Health Records (EHR) system, b
 
 ---
 
+## Tech Stack
+
+- **Java Version:** 17 (project uses Java 21 for compilation)
+- **Spring Boot Version:** 3.4.4
+
+---
+
 ## Features
 
 - **User Authentication & Authorization** (JWT, Spring Security)
