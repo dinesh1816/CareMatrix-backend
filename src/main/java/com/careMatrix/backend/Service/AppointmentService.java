@@ -7,6 +7,7 @@ import com.careMatrix.backend.Entity.Patient;
 import com.careMatrix.backend.Repo.AppointmentRepo;
 import com.careMatrix.backend.Repo.DoctorRepo;
 import com.careMatrix.backend.Repo.PatientRepo;
+import com.careMatrix.backend.Service.GoogleCalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,9 @@ public class AppointmentService {
 
     @Autowired
     private PatientRepo patientRepo;
+
+    @Autowired
+    private GoogleCalendarService googleCalendarService;
 
     public Page<Appointment> getAllAppointments(Pageable pageable) {
         return appointmentRepo.findAll(pageable);
@@ -52,9 +56,23 @@ public class AppointmentService {
             throw new RuntimeException("Slot unavailable");
         }
 
-        // If Telemedicine, generate a meeting link
+        // If Telemedicine, generate a real Google Meet link
         if ("Telemedicine".equalsIgnoreCase(appointment.getType())) {
-            appointment.setMeetingLink(generateMeetingLink());
+            try {
+                String timeZone = "America/Chicago"; // Change as needed
+                int durationMinutes = 30; // Or your slot duration
+                String meetLink = googleCalendarService.createMeetEvent(
+                    "Telemedicine Appointment",
+                    "Telemedicine appointment for patient " + patient.getName(),
+                    appointment.getDate(),
+                    appointment.getTime(),
+                    durationMinutes,
+                    timeZone
+                );
+                appointment.setMeetingLink(meetLink);
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to create Google Meet link: " + e.getMessage(), e);
+            }
         }
         return appointmentRepo.save(appointment);
     }
