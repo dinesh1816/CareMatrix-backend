@@ -167,11 +167,24 @@ public class AppointmentService {
         List<AvailableSlotDTO> availableSlots = new ArrayList<>();
         LocalTime currentSlot = startTime;
         
+        // Get current time if the date is today
+        LocalTime currentTime = null;
+        if (date.equals(LocalDate.now())) {
+            currentTime = LocalTime.now();
+        }
+        
         // Generate slots for the entire day
         while (currentSlot.plusMinutes(appointmentDurationMinutes).isBefore(endTime) || 
                currentSlot.plusMinutes(appointmentDurationMinutes).equals(endTime)) {
             LocalTime slotEnd = currentSlot.plusMinutes(appointmentDurationMinutes);
+            
+            // Check if slot is available based on:
+            // 1. Not already booked
+            // 2. If today, not in the past
             boolean isAvailable = !bookedSlots.contains(currentSlot);
+            if (currentTime != null && currentSlot.isBefore(currentTime)) {
+                isAvailable = false;
+            }
             
             availableSlots.add(new AvailableSlotDTO(currentSlot, slotEnd, isAvailable));
             currentSlot = slotEnd;
